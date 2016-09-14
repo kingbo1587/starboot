@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:context="http://www.springframework.org/schema/context"
+    xmlns:rabbit="http://www.springframework.org/schema/rabbit"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+	    http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/context
+       http://www.springframework.org/schema/context/spring-context.xsd
+       http://www.springframework.org/schema/rabbit
+        http://www.springframework.org/schema/rabbit/spring-rabbit.xsd">
+
+    <rabbit:connection-factory id="rabbitConnectionFactory" host="${rabbit.host}" port="${rabbit.port}"
+        username="${rabbit.username}" password="${rabbit.password}" requested-heartbeat="30"
+        virtual-host="${rabbit.vhost}" channel-cache-size="50"/>
+
+    <rabbit:admin id="rabbitAdmin" connection-factory="rabbitConnectionFactory"/>
+
+    <bean id="rabbitListenerContainerFactory"
+          class="org.springframework.amqp.rabbit.config.SimpleRabbitListenerContainerFactory">
+        <property name="connectionFactory" ref="rabbitConnectionFactory"/>
+        <property name="concurrentConsumers" value="16"/>
+        <property name="maxConcurrentConsumers" value="50"/>
+    </bean>
+
+    <!-- queue declare -->
+    <rabbit:queue durable="true" auto-delete="false" exclusive="false" name="test.statuschange" />
+    <rabbit:queue durable="true" auto-delete="false" exclusive="false" name="test.sendmessage"/>
+
+    <!-- bind queue to exchange -->
+    <rabbit:direct-exchange name="ex_test" auto-delete="false" durable="true">
+        <rabbit:bindings>
+            <rabbit:binding queue="test.statuschange" key="status"></rabbit:binding>
+            <rabbit:binding queue="test.sendmessage" key="message"></rabbit:binding>
+        </rabbit:bindings>
+    </rabbit:direct-exchange>
+
+    <rabbit:template id="rabbitTemplate" connection-factory="rabbitConnectionFactory"
+                     retry-template="retryTemplate" reply-timeout="60000"/>
+
+    <bean id="retryTemplate" class="org.springframework.retry.support.RetryTemplate">
+        <property name="backOffPolicy">
+            <bean class="org.springframework.retry.backoff.ExponentialBackOffPolicy">
+                <property name="initialInterval" value="500" />
+                <property name="multiplier" value="10.0" />
+                <property name="maxInterval" value="10000" />
+            </bean>
+        </property>
+    </bean>
+
+</beans>

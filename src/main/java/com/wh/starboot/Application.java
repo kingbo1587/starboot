@@ -7,21 +7,17 @@ import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.boot.web.support.SpringBootServletInitializer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.PropertySource;
-import org.springframework.context.annotation.PropertySources;
+import org.springframework.context.annotation.ImportResource;
 import org.springframework.web.filter.CharacterEncodingFilter;
 
 @Configuration
-@PropertySources({ @PropertySource("classpath:config/config.properties") })
 @SpringBootApplication
+@ImportResource({"classpath*:spring/spring.xml"})
 public class Application extends SpringBootServletInitializer {
 
 	@Override
 	protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
 		System.out.println("==============SpringApplicationBuilder========!!!!!!!!!!!!!!");
-		System.out.println("==============SpringApplicationBuilder========!!!!!!!!!!!!!!");
-		System.out.println("==============SpringApplicationBuilder========!!!!!!!!!!!!!!");
-		
 		return application.sources(Application.class);
 	}
 
