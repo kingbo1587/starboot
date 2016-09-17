@@ -5,7 +5,7 @@ buildscript {
     	jcenter()
     }
     dependencies {
-        classpath("org.springframework.boot:spring-boot-gradle-plugin:1.4.0.RELEASE")
+        classpath('org.springframework.boot:spring-boot-gradle-plugin:1.4.0.RELEASE')
     }
     
 }
@@ -13,7 +13,7 @@ buildscript {
 
 // Apply the java plugin
 apply plugin: 'java'
-apply plugin: "eclipse"
+apply plugin: 'eclipse'
 apply plugin: 'spring-boot'
 apply plugin: 'war'
 
@@ -52,14 +52,14 @@ dependencies {
 	
 	
 	// spring
-	compile "org.springframework:spring-orm"
-	compile "org.springframework:spring-aspects"
+	compile 'org.springframework:spring-orm'
+	compile 'org.springframework:spring-aspects'
 	
 	// mysql, mybatis and database connection pool
     compile 'com.zaxxer:HikariCP:2.4.1'
     compile 'mysql:mysql-connector-java:5.1.37'
-    compile "org.mybatis:mybatis-spring:1.2.3"
-    compile "org.mybatis:mybatis:3.3.0"
+    compile 'org.mybatis:mybatis-spring:1.2.3'
+    compile 'org.mybatis:mybatis:3.3.0'
     
     // mongo
     compile 'org.springframework.data:spring-data-mongodb'
