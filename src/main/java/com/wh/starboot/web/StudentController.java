@@ -42,4 +42,11 @@ public class StudentController {
 		return "1";
 	}
 
+	@RequestMapping(value = "sendMq", method = RequestMethod.GET)
+	@ResponseBody
+	String sendMq(String message) {
+		studentService.sendMq(message);
+		return "1";
+	}
+
 }

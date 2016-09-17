@@ -10,4 +10,6 @@ public interface StudentService {
 
 	void getBaidu();
 
+	void sendMq(String message);
+
 }

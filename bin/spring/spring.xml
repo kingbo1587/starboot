@@ -29,6 +29,6 @@
 	<import resource="mongo.xml" />
 	<import resource="httpclient.xml" />
 	<import resource="redis.xml" />
-	<!-- <import resource="rabbit.xml" /> -->
+	<import resource="rabbit.xml" />
 
 </beans>

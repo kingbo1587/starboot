@@ -24,14 +24,12 @@
     </bean>
 
     <!-- queue declare -->
-    <rabbit:queue durable="true" auto-delete="false" exclusive="false" name="test.statuschange" />
-    <rabbit:queue durable="true" auto-delete="false" exclusive="false" name="test.sendmessage"/>
+    <rabbit:queue durable="true" auto-delete="false" exclusive="false" name="${mq.queue.test}"/>
 
     <!-- bind queue to exchange -->
-    <rabbit:direct-exchange name="ex_test" auto-delete="false" durable="true">
+    <rabbit:direct-exchange name="${mq.exchange.test}" auto-delete="false" durable="true">
         <rabbit:bindings>
-            <rabbit:binding queue="test.statuschange" key="status"></rabbit:binding>
-            <rabbit:binding queue="test.sendmessage" key="message"></rabbit:binding>
+            <rabbit:binding queue="${mq.queue.test}" key="${mq.key.test}"></rabbit:binding>
         </rabbit:bindings>
     </rabbit:direct-exchange>
 

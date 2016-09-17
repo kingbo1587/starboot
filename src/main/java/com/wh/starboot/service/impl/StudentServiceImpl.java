@@ -6,13 +6,16 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.redis.core.BoundValueOperations;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import com.wh.starboot.dao.StudentDao;
+import com.wh.starboot.model.QueueMessage;
 import com.wh.starboot.model.StudentBean;
 import com.wh.starboot.service.StudentService;
 
@@ -29,6 +32,13 @@ public class StudentServiceImpl implements StudentService {
 	private HttpClient httpClient;
 	@Autowired
 	private RedisTemplate<String, Integer> redisTemplate;
+	@Autowired
+	private RabbitTemplate rabbitTemplate;
+
+	@Value("${mq.exchange.test}")
+	private String mqExchangeTest;
+	@Value("${mq.key.test}")
+	private String mqKeyTest;
 
 	@Override
 	public StudentBean get(String studentId) {
@@ -59,6 +69,23 @@ public class StudentServiceImpl implements StudentService {
 			httpClient.execute(httpGet);
 		} catch (Exception e) {
 			logger.error("getBaidu|excetpion", e);
+		}
+	}
+
+	@Override
+	public void sendMq(String message) {
+		logger.debug("sendMq|message:{}", message);
+		try {
+			final QueueMessage queueMessage = new QueueMessage(message);
+			new Thread(new Runnable() {
+				@Override
+				public void run() {
+					rabbitTemplate.send(mqExchangeTest, mqKeyTest, queueMessage.toAmqpMessage());
+				}
+			}).start();
+		} catch (Exception e) {
+			logger.error("sendMq|exception", e);
+			throw e;
 		}
 	}
 

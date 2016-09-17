@@ -47,6 +47,10 @@ dependencies {
 	// thymeleaf
 	compile 'org.springframework.boot:spring-boot-starter-thymeleaf'
 	
+	// rabbitmq
+	compile 'org.springframework.boot:spring-boot-starter-amqp'
+	
+	
 	// spring
 	compile "org.springframework:spring-orm"
 	compile "org.springframework:spring-aspects"
@@ -69,9 +73,5 @@ dependencies {
     
     // jackson
     compile 'com.fasterxml.jackson.core:jackson-core'
-    
-    // AMQP(rabbit)
-    compile 'org.springframework.amqp:spring-amqp'
-    compile 'org.springframework.amqp:spring-rabbit'
 	
 }
