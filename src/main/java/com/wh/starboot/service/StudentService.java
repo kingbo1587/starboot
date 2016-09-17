@@ -8,4 +8,6 @@ public interface StudentService {
 
 	int save(StudentBean bean);
 
+	void getBaidu();
+
 }

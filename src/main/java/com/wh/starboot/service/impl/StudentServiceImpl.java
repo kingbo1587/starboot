@@ -1,7 +1,15 @@
 package com.wh.starboot.service.impl;
 
+import java.net.URI;
+
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.redis.core.BoundValueOperations;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import com.wh.starboot.dao.StudentDao;
@@ -11,13 +19,27 @@ import com.wh.starboot.service.StudentService;
 @Service
 public class StudentServiceImpl implements StudentService {
 
+	private static final Logger logger = LoggerFactory.getLogger(StudentServiceImpl.class);
+
 	@Autowired
 	private StudentDao studentDao;
 	@Autowired
 	private MongoTemplate mongoTemplate;
+	@Autowired
+	private HttpClient httpClient;
+	@Autowired
+	private RedisTemplate<String, Integer> redisTemplate;
 
 	@Override
 	public StudentBean get(String studentId) {
+		BoundValueOperations<String, Integer> valueOpers = redisTemplate.boundValueOps(studentId);
+		Integer count = valueOpers.get();
+		if (count == null) {
+			count = 0;
+		}
+		count++;
+		logger.info("get|count|count:{}", count);
+		valueOpers.set(count);
 		return studentDao.get(studentId);
 	}
 
@@ -26,6 +48,18 @@ public class StudentServiceImpl implements StudentService {
 		int rows = studentDao.add(bean);
 		mongoTemplate.save(bean);
 		return rows;
+	}
+
+	@Override
+	public void getBaidu() {
+		String url = "http://www.baidu.com";
+		HttpGet httpGet = new HttpGet();
+		httpGet.setURI(URI.create(url));
+		try {
+			httpClient.execute(httpGet);
+		} catch (Exception e) {
+			logger.error("getBaidu|excetpion", e);
+		}
 	}
 
 }

@@ -44,6 +44,9 @@ dependencies {
 	// spring boot
 	compile 'org.springframework.boot:spring-boot-starter-web'
 	
+	// thymeleaf
+	compile 'org.springframework.boot:spring-boot-starter-thymeleaf'
+	
 	// spring
 	compile "org.springframework:spring-orm"
 	compile "org.springframework:spring-aspects"
@@ -56,5 +59,19 @@ dependencies {
     
     // mongo
     compile 'org.springframework.data:spring-data-mongodb'
+    
+    // httpclient
+    compile 'org.apache.httpcomponents:httpclient'
+	
+	// redis
+	compile 'org.springframework.data:spring-data-redis'
+    compile 'redis.clients:jedis'
+    
+    // jackson
+    compile 'com.fasterxml.jackson.core:jackson-core'
+    
+    // AMQP(rabbit)
+    compile 'org.springframework.amqp:spring-amqp'
+    compile 'org.springframework.amqp:spring-rabbit'
 	
 }

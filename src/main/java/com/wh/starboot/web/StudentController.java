@@ -35,4 +35,11 @@ public class StudentController {
 		return studentService.save(studentBean);
 	}
 
+	@RequestMapping(value = "getBaidu", method = RequestMethod.GET)
+	@ResponseBody
+	String getBaidu() {
+		studentService.getBaidu();
+		return "1";
+	}
+
 }

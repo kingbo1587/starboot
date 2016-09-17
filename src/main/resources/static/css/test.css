@@ -1,0 +1,11 @@
+body {
+    background: gray;
+}
+
+div.pic {
+    background: url("../img/test.jpg") no-repeat;
+}
+
+div.pic p {
+    color: red;
+}

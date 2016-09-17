@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head lang="en">
+<title>Spring Thymeleaf Framework</title>
+<meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
+<link th:href="@{/css/test.css}" rel="stylesheet" media="screen" />
+<script type="text/javascript" th:src="@{/js/index.js}"></script>
+</head>
+
+<body>
+	<h1>
+		Hello <span th:text="${name}" />
+	</h1>
+	<p th:inline="text">Hello [[${name}]]</p>
+	<ul>
+		<li th:each="proj: ${projects}" th:text="${proj}" />
+	</ul>
+
+	<img th:src="@{/img/test.jpg}" />
+	<div class="pic">
+		<p>1</p>
+		<p>2</p>
+		<p id="p1">3</p>
+		<p id="p2">4</p>
+	</div>
+</body>
+
+</html>
