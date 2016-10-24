@@ -15,30 +15,30 @@ import org.springframework.web.filter.CharacterEncodingFilter;
 @ImportResource({"classpath*:spring/spring.xml"})
 public class Application extends SpringBootServletInitializer {
 
-	@Override
-	protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
-		System.out.println("==============SpringApplicationBuilder========!!!!!!!!!!!!!!");
-		return application.sources(Application.class);
-	}
+    @Override
+    protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
+        System.out.println("==============SpringApplicationBuilder========!!!!!!!!!!!!!!");
+        return application.sources(Application.class);
+    }
 
-	public static void main(String[] args) throws Exception {
-		SpringApplication.run(Application.class, args);
-	}
+    public static void main(String[] args) throws Exception {
+        SpringApplication.run(Application.class, args);
+    }
 
-	/**
-	 * 解决post中文乱码
-	 * 
-	 * @return
-	 */
-	@Bean
-	public FilterRegistrationBean characterEncodingFilter() {
-		final CharacterEncodingFilter characterEncodingFilter = new CharacterEncodingFilter();
-		characterEncodingFilter.setEncoding("UTF-8");
-		characterEncodingFilter.setForceEncoding(true);
-		final FilterRegistrationBean filterRegistrationBean = new FilterRegistrationBean();
-		filterRegistrationBean.setFilter(characterEncodingFilter);
-		filterRegistrationBean.addUrlPatterns("/*");
-		return filterRegistrationBean;
-	}
+    /**
+     * 解决post中文乱码
+     *
+     * @return
+     */
+    @Bean
+    public FilterRegistrationBean characterEncodingFilter() {
+        final CharacterEncodingFilter characterEncodingFilter = new CharacterEncodingFilter();
+        characterEncodingFilter.setEncoding("UTF-8");
+        characterEncodingFilter.setForceEncoding(true);
+        final FilterRegistrationBean filterRegistrationBean = new FilterRegistrationBean();
+        filterRegistrationBean.setFilter(characterEncodingFilter);
+        filterRegistrationBean.addUrlPatterns("/*");
+        return filterRegistrationBean;
+    }
 
 }

@@ -18,5 +18,9 @@
         <processorPath useClasspath="true" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="startboot_main" target="1.8" />
+      <module name="startboot_test" target="1.8" />
+    </bytecodeTargetLevel>
   </component>
 </project>

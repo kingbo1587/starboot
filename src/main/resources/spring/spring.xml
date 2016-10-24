@@ -16,7 +16,7 @@
                                   classpath*:properties/mongo.properties,
                                   classpath*:properties/httpclient.properties,
                                   classpath*:properties/config.properties,
-                                  file:/data/config/bread/config.properties"
+                                  file:/data/config/starboot/config.properties"
 		system-properties-mode="ENVIRONMENT" />
 
 	<!-- configure the thread pool of scheduler and async, same as @EnableAysnc and @EnableScheduling -->

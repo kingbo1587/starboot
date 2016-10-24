@@ -3,6 +3,9 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/starboot.iml" filepath="$PROJECT_DIR$/starboot.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/startboot.iml" filepath="$PROJECT_DIR$/.idea/modules/startboot.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/startboot_main.iml" filepath="$PROJECT_DIR$/.idea/modules/startboot_main.iml" group="startboot" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/startboot_test.iml" filepath="$PROJECT_DIR$/.idea/modules/startboot_test.iml" group="startboot" />
     </modules>
   </component>
 </project>
