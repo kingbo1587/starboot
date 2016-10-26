@@ -2,7 +2,7 @@ buildscript {
     repositories {
         mavenLocal()
         maven {
-            url 'http://maven.oschina.net/content/groups/public/'
+            url 'http://maven.aliyun.com/nexus/content/groups/public/'
         }
         mavenCentral()
         jcenter()
@@ -25,7 +25,7 @@ repositories {
     // You can declare any Maven/Ivy/file repository here.
     mavenLocal()
     maven {
-        url 'http://maven.oschina.net/content/groups/public/'
+        url 'http://maven.aliyun.com/nexus/content/groups/public/'
     }
     mavenCentral()
     jcenter()
@@ -41,43 +41,36 @@ war {
 dependencies {
     // The production code uses the SLF4J logging API at compile time
     compile 'org.slf4j:slf4j-api:1.7.21'
-
-    testCompile 'junit:junit:4.12'
-
     // https://mvnrepository.com/artifact/org.apache.commons/commons-lang3
     compile 'org.apache.commons:commons-lang3:3.4'
     // spring boot
     compile 'org.springframework.boot:spring-boot-starter-web'
-
     // thymeleaf
     compile 'org.springframework.boot:spring-boot-starter-thymeleaf'
-
     // rabbitmq
     compile 'org.springframework.boot:spring-boot-starter-amqp'
-
+    // test
     compile 'org.springframework.boot:spring-boot-starter-test'
-
+    // junit
+    testCompile 'junit:junit:4.12'
     // spring
     compile 'org.springframework:spring-orm'
     compile 'org.springframework:spring-aspects'
-
     // mysql, mybatis and database connection pool
     compile 'com.zaxxer:HikariCP:2.4.1'
     compile 'mysql:mysql-connector-java:5.1.37'
     compile 'org.mybatis:mybatis-spring:1.2.3'
     compile 'org.mybatis:mybatis:3.3.0'
-
     // mongo
     compile 'org.springframework.data:spring-data-mongodb'
-
     // httpclient
-    compile 'org.apache.httpcomponents:httpclient'
-
+    compile 'org.apache.httpcomponents:httpclient:4.5.2'
     // redis
     compile 'org.springframework.data:spring-data-redis'
     compile 'redis.clients:jedis'
-
-    // jackson
-    compile 'com.fasterxml.jackson.core:jackson-core'
+    // gson
+    compile group: 'com.google.code.gson', name: 'gson', version: '2.7'
+    // dom4j
+    compile 'dom4j:dom4j:1.6.1'
 
 }

@@ -3,7 +3,7 @@ package com.wh.starboot.util;
 import org.apache.http.impl.client.BasicCookieStore;
 
 /**
- * Created by 掌众 on 2016/10/21.
+ * Created by  on 2016/10/21.
  */
 public class HttpData {
 

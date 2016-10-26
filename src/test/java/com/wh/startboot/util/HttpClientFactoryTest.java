@@ -16,7 +16,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import java.net.URI;
 
 /**
- * Created by 掌众 on 2016/10/22.
+ * Created by  on 2016/10/22.
  */
 @RunWith(SpringRunner.class)
 @ContextConfiguration(classes = Application.class, loader = SpringBootContextLoader.class)
@@ -34,7 +34,7 @@ public class HttpClientFactoryTest {
     @Test
     public void testGet() {
         String requestId = "haha";
-        HttpPost httpGet = new HttpPost("http://www.baidu.com");
+        HttpGet httpGet = new HttpGet("http://www.baidu.com");
         HttpData httpData = httpClientFactory.execute(requestId, httpGet);
         System.out.println(httpData);
     }
