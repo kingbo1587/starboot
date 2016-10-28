@@ -5,10 +5,8 @@ import org.apache.http.HttpHost;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpRequestBase;
-import org.apache.http.impl.client.BasicCookieStore;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClientBuilder;
-import org.apache.http.impl.client.HttpClients;
+import org.apache.http.conn.HttpClientConnectionManager;
+import org.apache.http.impl.client.*;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 import org.apache.http.message.BasicHeader;
 import org.apache.http.util.EntityUtils;
@@ -52,15 +50,17 @@ public class HttpClientFactory {
             new BasicHeader("User-Agent", "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.84 Safari/537.36")
     ));
     private PoolingHttpClientConnectionManager connManager;
-
+    private DefaultHttpRequestRetryHandler retryHandler;
 
     @PostConstruct
     private void init() {
         logger.info("HttpClientFactory|init");
         connManager = new PoolingHttpClientConnectionManager();
-        connManager.setDefaultMaxPerRoute(200);
-        connManager.setMaxTotal(400);
-        connManager.setValidateAfterInactivity(5 * 60 * 1000);
+        connManager.setDefaultMaxPerRoute(20);
+        connManager.setMaxTotal(200);
+        new Thread(new IdleConnectionMonitorThread(connManager)).start();
+        // 重试
+        // retryHandler = new DefaultHttpRequestRetryHandler(3, true);
     }
 
     /**
@@ -73,6 +73,9 @@ public class HttpClientFactory {
         HttpClientBuilder builder = HttpClients.custom();
         builder.setConnectionManager(connManager);
         builder.setDefaultHeaders(defaultHeaders);
+        if (retryHandler != null) {
+            builder.setRetryHandler(retryHandler);
+        }
         if (cookieStore != null) {
             builder.setDefaultCookieStore(cookieStore);
         }
@@ -104,12 +107,14 @@ public class HttpClientFactory {
         }
         CloseableHttpClient httpClient = create(cookieStore);
         HttpData httpData = new HttpData();
+        HttpResponse httpResponse = null;
         try {
-            HttpResponse httpResponse = httpClient.execute(hrb);
+            httpResponse = httpClient.execute(hrb);
             int statusCode = httpResponse.getStatusLine().getStatusCode();
             String data = EntityUtils.toString(httpResponse.getEntity());
             httpData.setStatusCode(statusCode);
             httpData.setData(data);
+            httpData.setHeaders(httpResponse.getAllHeaders());
             httpData.setCookieStore(cookieStore);
             if (saveCookie) {
                 if (requestFirst) {
@@ -123,10 +128,18 @@ public class HttpClientFactory {
         } catch (Exception e) {
             logger.error("http request excetpion|requestId:{}", requestId, e);
         } finally {
+            if (httpResponse != null) {
+                try {
+                    EntityUtils.consume(httpResponse.getEntity());
+                } catch (IOException e) {
+
+                }
+            }
             if (hrb != null) {
                 hrb.releaseConnection();
             }
         }
+        logger.info("request result requestId:{},httpData:{}", requestId, httpData);
         return httpData;
     }
 
@@ -208,11 +221,13 @@ public class HttpClientFactory {
      * @param <T>   返回类型
      * @return 返回类
      */
+    @SuppressWarnings("unchecked")
     private static <T> T deserialize(byte[] bytes) {
         try {
             //反序列化
             ByteArrayInputStream bais = new ByteArrayInputStream(bytes);
             ObjectInputStream ois = new ObjectInputStream(bais);
+
             return (T) ois.readObject();
         } catch (Exception e) {
             logger.error("deserialize exception", e);
@@ -270,6 +285,43 @@ public class HttpClientFactory {
             return null;
         }
         return deserialize(bytes);
+    }
+
+    public static class IdleConnectionMonitorThread extends Thread {
+
+        private final HttpClientConnectionManager connMgr;
+        private volatile boolean shutdown;
+
+        public IdleConnectionMonitorThread(HttpClientConnectionManager connMgr) {
+            super();
+            this.connMgr = connMgr;
+        }
+
+        @Override
+        public void run() {
+            try {
+                while (!shutdown) {
+                    synchronized (this) {
+                        wait(5000);
+                        // Close expired connections
+                        connMgr.closeExpiredConnections();
+                        // Optionally, close connections
+                        // that have been idle longer than 30 sec
+                        connMgr.closeIdleConnections(30, TimeUnit.SECONDS);
+                    }
+                }
+            } catch (InterruptedException ex) {
+                // terminate
+            }
+        }
+
+        public void shutdown() {
+            shutdown = true;
+            synchronized (this) {
+                notifyAll();
+            }
+        }
+
     }
 
 }
