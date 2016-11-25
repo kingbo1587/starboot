@@ -56,7 +56,7 @@ public class StudentServiceImpl implements StudentService {
 	@Override
 	public int save(StudentBean bean) {
 		int rows = studentDao.add(bean);
-		mongoTemplate.save(bean);
+		// mongoTemplate.save(bean);
 		return rows;
 	}
 

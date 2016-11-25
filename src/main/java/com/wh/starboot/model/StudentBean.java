@@ -5,47 +5,66 @@ import org.springframework.data.mongodb.core.index.CompoundIndexes;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document(collection = "studentBean")
-@CompoundIndexes({ @CompoundIndex(name = "studentBean_studentId_index", def = "{'studentId': 1}", unique = true), })
+@CompoundIndexes({@CompoundIndex(name = "studentBean_studentId_index", def = "{'studentId': 1}", unique = true),})
 public class StudentBean {
 
-	private String studentId;
+    private String studentId;
 
-	private String name;
+    private String name;
 
-	private Integer age;
+    private Integer age;
 
-	private Integer grade;
+    private Integer grade;
 
-	public String getStudentId() {
-		return studentId;
-	}
+    private String desc;
 
-	public void setStudentId(String studentId) {
-		this.studentId = studentId;
-	}
+    private String info;
 
-	public String getName() {
-		return name;
-	}
+    public String getStudentId() {
+        return studentId;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public void setStudentId(String studentId) {
+        this.studentId = studentId;
+    }
 
-	public Integer getAge() {
-		return age;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public void setAge(Integer age) {
-		this.age = age;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	public Integer getGrade() {
-		return grade;
-	}
+    public Integer getAge() {
+        return age;
+    }
 
-	public void setGrade(Integer grade) {
-		this.grade = grade;
-	}
+    public void setAge(Integer age) {
+        this.age = age;
+    }
 
+    public Integer getGrade() {
+        return grade;
+    }
+
+    public void setGrade(Integer grade) {
+        this.grade = grade;
+    }
+
+    public String getDesc() {
+        return desc;
+    }
+
+    public void setDesc(String desc) {
+        this.desc = desc;
+    }
+
+    public String getInfo() {
+        return info;
+    }
+
+    public void setInfo(String info) {
+        this.info = info;
+    }
 }

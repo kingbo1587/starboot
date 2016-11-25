@@ -1,42 +1,54 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE generatorConfiguration
-  PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
-  "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+        PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
 
 <generatorConfiguration>
-    <classPathEntry location="mysql-connector-java-5.1.26-bin.jar" />
+    <classPathEntry location="mysql-connector-java-5.1.26-bin.jar"/>
 
-    <context id="stormDB" targetRuntime="MyBatis3">
+    <context id="stormDB" targetRuntime="MyBatis3" defaultModelType="flat">
+        <!--区分数据保留字段,如desc要写成`desc`-->
+        <property name="autoDelimitKeywords" value="true"/>
+        <property name="beginningDelimiter" value="`"/>
+        <property name="endingDelimiter" value="`"/>
+        <!-- 生成文件编码，生成中文注释用-->
+        <property name="javaFileEncoding" value="UTF-8"/>
 
         <commentGenerator>
-            <property name="suppressDate" value="true" />
+            <!--实体类注释是否输出日期-->
+            <property name="suppressDate" value="true"/>
+            <!--实体类注释是否输出数据注释-->
+            <property name="addRemarkComments" value="true"/>
         </commentGenerator>
 
         <jdbcConnection driverClass="com.mysql.jdbc.Driver"
-            connectionURL="jdbc:mysql://127.0.0.1/test" userId="root" password="root">
+                        connectionURL="jdbc:mysql://127.0.0.1/test" userId="root" password="root">
         </jdbcConnection>
 
         <javaTypeResolver>
-            <property name="forceBigDecimals" value="false" />
+            <property name="forceBigDecimals" value="false"/>
         </javaTypeResolver>
 
         <javaModelGenerator targetPackage="com.wh.starboot.model.database"
-            targetProject="../../src/main/java">
-            <property name="enableSubPackages" value="true" />
-            <property name="trimStrings" value="true" />
+                            targetProject="../../src/main/java">
+            <property name="enableSubPackages" value="true"/>
+            <property name="trimStrings" value="true"/>
         </javaModelGenerator>
 
         <sqlMapGenerator targetPackage="mapper"
-            targetProject="../../src/main/resources">
-            <property name="enableSubPackages" value="true" />
+                         targetProject="../../src/main/resources">
+            <property name="enableSubPackages" value="true"/>
         </sqlMapGenerator>
 
         <javaClientGenerator type="XMLMAPPER"
-            targetPackage="com.wh.starboot.dao.mapper" targetProject="../../src/main/java">
-            <property name="enableSubPackages" value="true" />
+                             targetPackage="com.wh.starboot.dao.mapper" targetProject="../../src/main/java">
+            <property name="enableSubPackages" value="true"/>
         </javaClientGenerator>
 
-        <table tableName="student" domainObjectName="Student"/>
+        <table tableName="student" domainObjectName="Student">
+            <columnOverride column="desc" javaType="java.lang.String"
+                            typeHandler="com.wh.starboot.model.StringBlobTypeHandler"/>
+        </table>
 
     </context>
 </generatorConfiguration>
