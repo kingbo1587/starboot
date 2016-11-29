@@ -16,37 +16,37 @@ import com.wh.starboot.service.StudentService;
 @RequestMapping("student")
 public class StudentController {
 
-	private static final Logger logger = LoggerFactory.getLogger(StudentController.class);
+    private static final Logger logger = LoggerFactory.getLogger(StudentController.class);
 
-	@Autowired
-	private StudentService studentService;
+    @Autowired
+    private StudentService studentService;
 
-	@RequestMapping(value = "get", method = RequestMethod.GET)
-	@ResponseBody
-	StudentBean get(String studentId) {
-		logger.info("get|studentId:{}", studentId);
-		return studentService.get(studentId);
-	}
+    @RequestMapping(value = "get", method = RequestMethod.GET)
+    @ResponseBody
+    StudentBean get(String studentId) {
+        logger.info("get|studentId:{}", studentId);
+        return studentService.get(studentId);
+    }
 
-	@RequestMapping(value = "save", method = RequestMethod.POST)
-	@ResponseBody
-	Integer save(@RequestBody StudentBean studentBean) {
-		logger.info("get|studentBean:{}", studentBean);
-		return studentService.save(studentBean);
-	}
+    @RequestMapping(value = "save", method = RequestMethod.POST)
+    @ResponseBody
+    Integer save(@RequestBody StudentBean studentBean) {
+        logger.info("get|studentBean:{}", studentBean);
+        return studentService.save(studentBean);
+    }
 
-	@RequestMapping(value = "getBaidu", method = RequestMethod.GET)
-	@ResponseBody
-	String getBaidu() {
-		studentService.getBaidu();
-		return "1";
-	}
+    @RequestMapping(value = "getBaidu", method = RequestMethod.GET)
+    @ResponseBody
+    String getBaidu() {
+        studentService.getBaidu();
+        return "1";
+    }
 
-	@RequestMapping(value = "sendMq", method = RequestMethod.GET)
-	@ResponseBody
-	String sendMq(String message) {
-		studentService.sendMq(message);
-		return "1";
-	}
+    @RequestMapping(value = "sendMq", method = RequestMethod.GET)
+    @ResponseBody
+    String sendMq(String message) {
+        studentService.sendMq(message);
+        return "1";
+    }
 
 }

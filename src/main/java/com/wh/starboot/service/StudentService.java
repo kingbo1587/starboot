@@ -12,4 +12,5 @@ public interface StudentService {
 
 	void sendMq(String message);
 
+    void sayHi(String str);
 }
